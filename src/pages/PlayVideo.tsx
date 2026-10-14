@@ -9,6 +9,35 @@ declare global {
   }
 }
 
+const AdBanner = () => {
+  const bannerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (bannerRef.current && !bannerRef.current.firstChild) {
+      const conf = document.createElement('script');
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = 'https://deliberatewatchful.com/0a1f2cb9ea9389cdacd94af4c5c06dbf/invoke.js';
+      conf.innerHTML = `atOptions = {
+        'key' : '0a1f2cb9ea9389cdacd94af4c5c06dbf',
+        'format' : 'iframe',
+        'height' : 90,
+        'width' : 728,
+        'params' : {}
+      };`;
+
+      bannerRef.current.append(conf);
+      bannerRef.current.append(script);
+    }
+  }, []);
+
+  return (
+    <div className="w-full flex justify-center items-center mt-4 overflow-hidden">
+      <div ref={bannerRef} />
+    </div>
+  );
+};
+
 const LazyThumbnail = ({ url }: { url: string }) => {
   const ref = useRef<HTMLVideoElement>(null);
   const [inView, setInView] = useState(false);
@@ -289,6 +318,7 @@ export function PlayVideo() {
           <source src={videoUrl} type="video/mp4" />
         </video>
       </div>
+      <AdBanner />
       <div className="flex mt-4 mb-4 border border-gray-700 rounded-lg overflow-hidden">
         <input type="text" value={`https://${window.location.hostname}/play/${id}`} readOnly className="flex-1 p-3 bg-gray-900 text-white outline-none" />
         <button onClick={handleCopy} className="bg-blue-600 hover:bg-blue-700 transition-colors text-white p-3">
